@@ -14,16 +14,17 @@ async function workProject(){
     }
 
     const Projects = await reponse.json();
-    ;
-    displayProjects(Projects);
+    displayProject(Projects);
+    
 }
     catch(error){
         console.error("Erreur lors de l’appel API :", error);
     }
 }
+workProject();
 
 function displayProject(projects) {
-    const container = document.getElementById("portfolio");
+    const container = document.querySelector("#portfolio .gallery");
 
     
     container.innerHTML = "";
