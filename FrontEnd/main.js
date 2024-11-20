@@ -75,27 +75,7 @@ categoryProject();
 function displayCatégorie(Catégories, allProject){
     const container = document.querySelector(".btn-category");
     container.innerHTML = "";
-    async function categoryProject() {
-    try{
-        const reponseCategory = await fetch(apiUrl + "/categories", {
-            method:"GET", 
-            headers: {
-                "content-type": "application/json",
-            }
-            
-        });
-         
-    if(!reponseCategory.ok){
-        console.error("erreur");
-        return;
-    }
     
-    displayCatégorie(await reponseCategory.json());
-
-    }catch(error){
-        console.error("Erreur lors de l’appel API :", error);
-    }   
-}
     //all button
     const allButton = document.createElement("button");
     allButton.classList.add("cat-btn");
