@@ -1,4 +1,4 @@
-//retrieving jobs via the API
+//Call the works api
 
 const apiUrl = "http://localhost:5678/api"
 
@@ -15,16 +15,25 @@ async function getWorks(){
         throw new Error ("Erreur lors de la récupération des projets");
     }
 
-    displayProject(await response.json());
+    const works = await response.json();
+    return works;
     
 } catch(error){
         console.error("Erreur lors de l’appel API :", error);
     }
 }
-getWorks();
+
+//display projects in HTML
+
+async function worksProject(){
+    const allProject = await getWorks();
+    if(allProject){
+        displayProject(allProject);
+    }
+}
+worksProject();
 
 //displaying jobs in HTML
-
 function displayProject(projects) {
     const container = document.querySelector("#portfolio .gallery");
     
@@ -33,48 +42,48 @@ function displayProject(projects) {
         const title = project.title
         const imageUrl = project.imageUrl
         
-        let categoryName
-
         const projectElement = document.createElement("div");
         projectElement.classList.add("project");
 
         projectElement.innerHTML = `
-            <h3>${title}</h3>
             <img src="${imageUrl}" alt="${title} image">
+            <h3>${title}</h3>
         `;
         container.appendChild(projectElement);
     });
 }
 
 // category recovery in the API
-
 async function categoryProject() {
     try{
-        const reponseCategory = await fetch(apiUrl + "/categories", {
+        const works = await getWorks();
+        const responseCategory = await fetch(apiUrl + "/categories", {
             method:"GET", 
             headers: {
                 "content-type": "application/json",
             }
         });
          
-    if(!reponseCategory.ok){
+    if(!responseCategory.ok){
         console.error("erreur");
         return;
     }
     
-    displayCatégorie(await reponseCategory.json());
+    //displayCatégorie(await reponseCategory.json());
+    const categories = await responseCategory.json();
+    displayCategorie(categories,works);
 
     }catch(error){
         console.error("Erreur lors de l’appel API :", error);
-    }  
+    } 
 }
 categoryProject();
 
 //display buttons in HTML
-
-function displayCatégorie(Catégories, allProject){
+function displayCategorie(Categories, allProject){
     const container = document.querySelector(".btn-category");
     container.innerHTML = "";
+    console.log("allProject :", allProject);
     
     //all button
     const allButton = document.createElement("button");
@@ -84,7 +93,7 @@ function displayCatégorie(Catégories, allProject){
     container.appendChild(allButton);
 
     //filtred Buttons
-    const filtredCategory = new Set (Catégories);
+    const filtredCategory = new Set (Categories);
         filtredCategory.forEach(cat=>{
             //const {id, name} = cat;
             const id = cat.id
@@ -96,15 +105,13 @@ function displayCatégorie(Catégories, allProject){
             button.dataset.id = id;
 
             button.addEventListener("click", () => {
-                const newFiltred = allProject.filter(projet => {
-                    if(projet.category.id === id){
-                         newFiltred.push(projet);
-                    }
-                });
+                const newFiltred = allProject.filter(projet => projet.category.id === id);
+                    //{if(projet.category.id === id){
+                         //newFiltred(projet);}
+                
                 displayProject(newFiltred);
             });
             container.appendChild(button);
-        });     
-        
+        });           
 }
- 
+getWorks();
