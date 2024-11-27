@@ -6,7 +6,7 @@ async function login() {
         const response = await fetch(apiLog, {
             method:"POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email,password }),
+            body: JSON.stringify({ email, password }),
         });
 
         if(!response.ok){
@@ -29,13 +29,11 @@ async function loginOk(){
    
     if(!email && !password){
         console.error("Veuillez renseigner votre email et mot de passe.");
-        alert("Veuillez renseigner votre email et mot de passe.");
         return;
     }
 
     if(email === emailOk && password === passwordOk){
         console.log("Connexion réussie !");
-        alert("Connexion réussie !");
         window.location.href = "index.html";
     }else{
         console.error("Email ou mot de passe incorrect.")
