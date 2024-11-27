@@ -24,7 +24,6 @@ async function getWorks(){
 }
 
 //display projects in HTML
-
 async function worksProject(){
     const allProject = await getWorks();
     if(allProject){
@@ -68,8 +67,7 @@ async function categoryProject() {
         console.error("erreur");
         return;
     }
-    
-    //displayCatégorie(await reponseCategory.json());
+
     const categories = await responseCategory.json();
     displayCategorie(categories,works);
 
@@ -85,17 +83,15 @@ function displayCategorie(Categories, allProject){
     container.innerHTML = "";
     console.log("allProject :", allProject);
     
-    //all button
+//all button
     const allButton = document.createElement("button");
     allButton.classList.add("cat-btn");
     allButton.textContent = "Tous";
     allButton.addEventListener("click", () => displayProject(allProject));
     container.appendChild(allButton);
 
-    //filtred Buttons
-    const filtredCategory = new Set (Categories);
+const filtredCategory = new Set (Categories);
         filtredCategory.forEach(cat=>{
-            //const {id, name} = cat;
             const id = cat.id
             const name = cat.name
             
@@ -106,12 +102,10 @@ function displayCategorie(Categories, allProject){
 
             button.addEventListener("click", () => {
                 const newFiltred = allProject.filter(projet => projet.category.id === id);
-                    //{if(projet.category.id === id){
-                         //newFiltred(projet);}
                 
-                displayProject(newFiltred);
+            displayProject(newFiltred);
             });
             container.appendChild(button);
-        });           
+        }); 
 }
-getWorks();
+getWorks();   
