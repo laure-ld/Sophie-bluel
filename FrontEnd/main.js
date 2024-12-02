@@ -8,8 +8,7 @@ async function getWorks(){
             method:"GET", 
             headers: {
                 "content-type": "application/json",
-            }
-            
+            }    
         }); 
     if(!response.ok){
         throw new Error ("Erreur lors de la récupération des projets");
@@ -26,8 +25,9 @@ async function getWorks(){
 //display projects in HTML
 async function worksProject(){
     const allProject = await getWorks();
-    if(allProject){
+    if(allProject) {
         displayProject(allProject);
+        displayInProject(allProject);
     }
 }
 worksProject();
@@ -51,7 +51,7 @@ function displayProject(projects) {
         container.appendChild(projectElement);
     });
 }
-
+   
 // category recovery in the API
 async function categoryProject() {
     try{
@@ -108,4 +108,4 @@ const filtredCategory = new Set (Categories);
             container.appendChild(button);
         }); 
 }
-getWorks();   
+getWorks();  
