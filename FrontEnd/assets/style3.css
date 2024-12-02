@@ -1,0 +1,59 @@
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.elementModal {
+    width: 630px;
+    height: 688px;
+    background-color: white;
+}
+
+.elementModal h2 {
+    margin-top: 60px;
+    font-size: 26px;
+    color: black;
+    width: 100%;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    padding: 30px;
+    border: none;
+    background-color: white;
+}
+.btnMore {
+    text-align: center;
+    padding-top: 55px;
+}
+.more{
+    color: white;
+    background-color: #1D6154;
+    border-radius: 60px;
+    border: 1px solid #1D6154;
+    padding: 10px 50px;
+    text-decoration: overline #1D6154;
+}
+
+.mini-project{
+    display: grid;
+    grid-template-columns: repeat(5, 76px);
+    grid-template-rows: repeat(3, 105px);
+    justify-content: center; 
+    align-content: center;
+    gap: 10px;
+    margin: 50px 0;
+}
+
+.projects2 img{
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
