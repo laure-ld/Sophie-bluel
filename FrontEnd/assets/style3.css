@@ -1,3 +1,9 @@
+.Title {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 139px;
+}
+
 .modal {
 	position: fixed;
 	top: 0;
@@ -7,6 +13,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .elementModal {
@@ -16,11 +23,14 @@
 }
 
 .elementModal h2 {
-    margin-top: 60px;
     font-size: 26px;
     color: black;
     width: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    font-family: 'work Sans';
 }
 
 .close {
@@ -48,12 +58,30 @@
     grid-template-rows: repeat(3, 105px);
     justify-content: center; 
     align-content: center;
-    gap: 10px;
-    margin: 50px 0;
+    gap: 30px 10px;
 }
 
-.projects2 img{
+.mini-project img {
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
+}
+
+.project-item {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.delete-btn {
+    color: white;
+    background-color: black;
+    border: none;
+    position: absolute;
+    border-radius: 2px;
+    margin: 5px;
+    padding: 3px 5px;
+}
+
+.fa-solid, .fas{
+    font-size: 10px;
 }

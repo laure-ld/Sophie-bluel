@@ -149,11 +149,6 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-    width: 60%;
-    text-align: right;
-    margin-bottom: 90px;
-}
 .gallery {
 	width: 100%;
 	display: grid;
@@ -296,6 +291,6 @@ button.modify {
     align-items: center;
     float: right;
     width: 40%;
-    margin-bottom: 90px;
+    margin-bottom: 50px;
     padding-left: 30px;
 }

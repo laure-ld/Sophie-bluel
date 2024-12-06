@@ -8,6 +8,7 @@ const openModal = function(event){
     event.preventDefault()
     modal = document.querySelector(event.target.getAttribute("data-target"));
     modal.style.display = null
+    modal.addEventListener("click", closeModal);
     modal.removeAttribute("aria-hidden")
     modal.querySelector(".close").addEventListener("click", closeModal)
     modal.querySelector(".elementModal").addEventListener("click", stopPropagation)
@@ -17,6 +18,7 @@ const closeModal = function(event){
     if (modal === null) return
     event.preventDefault()
     modal.style.display = "none"
+    modal.removeEventListener("click", closeModal);
     modal.setAttribute("aria-hidden", "true")
     modal.querySelector(".close").removeEventListener("click", closeModal)
     modal.querySelector(".elementModal").removeEventListener("click", stopPropagation)
@@ -28,13 +30,6 @@ const stopPropagation = function (event) {
 
 document.querySelectorAll(".modify").forEach(attribut => {
     attribut.addEventListener("click", openModal)
-})
-
-window.addEventListener("keydown", function (event) {
-    console.log("Touche pressée :", event.key);
-     if (event.key === "Enter"){
-        closeModal(event)
-    }
 })
 
 //affichage projet miniature
@@ -60,14 +55,6 @@ async function getWorks(){
     }
 }
 
-async function worksProject(){
-    const allProject = await getWorks();
-    if(allProject) {
-        displayInProject(allProject);
-    }
-}
-worksProject();
-
 function displayInProject(projects2) {
     const container = document.querySelector("#portfolio .mini-project");
     
@@ -86,3 +73,90 @@ function displayInProject(projects2) {
     });
 }
 
+//supprision de projets
+const token = window.localStorage.getItem("token");
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM chargé, script exécuté !");
+    getWorks().then(projects => { 
+        console.log("Projets récupérés dans getWorks() :", projects); 
+        if (projects && projects.length > 0) {
+            btnBin(projects);
+        } else {
+            console.error("Aucun projet récupéré ou liste vide !");
+        }
+    });
+});
+
+function btnBin (projects) {
+    const container = document.querySelector(".mini-project");
+
+    if (!container) {
+        console.error("Le conteneur '.mini-project' est introuvable !");
+        return;
+    }
+    container.innerHTML = "";
+
+    projects.forEach (project => {
+        const id = project.id
+        const imageUrl = project.imageUrl
+        const title = project.title
+
+        const bin = document.createElement("button");
+        bin.classList.add("delete-btn");
+        bin.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+
+        bin.addEventListener("click", async () => {
+            const confirmation = confirm(`Voulez-vous vraiment supprimer le projet ${project.title} ?`);
+            if (confirmation) {
+                const isDeleted = await deleteProject(id);
+                if (isDeleted) {
+                    const projectElement = document.getElementById(`project-${id}`);
+                    projectElement.remove();
+                }
+            }
+        });
+
+        const projectElement = document.createElement("div");
+        projectElement.classList.add("project-item");
+        projectElement.id = `project-${id}`;
+        projectElement.innerHTML = ` <img src="${imageUrl}" alt="${title} image"> `;
+
+        projectElement.appendChild(bin);
+        container.appendChild(projectElement);
+    });
+}
+
+async function deleteProject(id) {
+    try {
+        const responseBin = await fetch (api + `/work/${id}`,{
+            method:"DELETE", 
+            headers: { 
+                "content-type": "application/json",
+                "Authorization": `Bearer ${token}`,
+             }   
+        });
+        
+        if (!responseBin.ok) {
+            console.error("non autorisé");
+            return false;
+        }
+        if(responseBin.status === 204) {
+            console.log("Projet supprimé avec succès !");
+            return true;
+        }
+        return false;
+
+    } catch (error) {
+        console.error("Erreur lors de l’appel API :", error);
+        return false 
+    }
+}
+
+async function worksProject(){
+    const allProject = await getWorks();
+    if(allProject) {
+        displayInProject(allProject);
+    }
+}
+worksProject();
