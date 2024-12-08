@@ -58,7 +58,6 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
-	;
 }
 
 header {
@@ -86,11 +85,12 @@ main {
 	margin: 50px 0;
     padding-top: 40px;
 }
+
 section {
 	margin: 50px 0
 }
 
-h1{
+h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
@@ -103,15 +103,15 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -126,13 +126,16 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1
 }
+
 #introduction img {
 	display: block;
 	margin: auto;
@@ -142,6 +145,7 @@ li:hover {
 #introduction article {
 	flex: 1
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -149,6 +153,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -170,7 +175,7 @@ li:hover {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2 {
 	margin-bottom: 10px;
 }
 #contact form {
@@ -220,7 +225,6 @@ footer nav ul {
 }
 
 /**button filter**/
-
 .btn-category {
     display: flex;
     justify-content: center;

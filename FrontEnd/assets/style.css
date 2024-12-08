@@ -50,6 +50,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
 	max-width: 1140px;
@@ -57,7 +58,6 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
-	;
 }
 header {
 	display: flex;
@@ -68,7 +68,7 @@ section {
 	margin: 50px 0
 }
 
-h1{
+h1 {
 	display: flex;
 	flex-direction: column;
 	font-family: 'Syne';
@@ -81,15 +81,15 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
 }
 
-h2{
+h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -152,7 +152,7 @@ li:hover {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2 {
 	margin-bottom: 10px;
 }
 #contact form {
@@ -233,9 +233,10 @@ footer nav ul {
 	text-align: center;
 
 }
-#login h2{
+#login h2 {
 	margin-bottom: 10px;
 }
+
 #login form {
 	text-align: left;
 	margin-top:30px;
@@ -249,6 +250,7 @@ footer nav ul {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #login label {
 	margin: 2em 0 1em 0;
 }
