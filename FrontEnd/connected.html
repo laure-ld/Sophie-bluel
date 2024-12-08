@@ -50,19 +50,45 @@
 				<button class="modify" data-target=".modal"><span class="material-symbols-outlined">edit_square</span> Modifier</button>
 			</div>
 			<aside class="modal" aria-hidden="true" style="display: none;">
-				<div class="elementModal" style="display: null;">
+				<div class="modal-gallery" style="display: none;">
 					<button class="close"><i class="fa-solid fa-xmark"></i></button>
 					<h2>Galerie photo</h2>
-					<div class="mini-project"></div>
+					<div class="modal-project-list"></div>
 					<div class="btnMore">
 					<button class="more">Ajouter une photo</button>
 					</div>
 				</div>
+				<div class="modal-add-photo" style="display: none;">
+					<button class="close"><i class="fa-solid fa-xmark"></i></button>
+					<h2>Ajout photo</h2>
+					<form>
+						<div class="photo-upload">
+							<input type="file" id="fileInput" class="file-input" accept="image/png, image/jpeg">
+    						<label for="fileInput" class="file-label">
+								<div class="upload-preview">
+									<i class="fa-solid fa-image"></i>
+								</div>
+							<button type="button" class="btn-add-photo">+ Ajouter photo</button>
+							<p class="upload-instructions"></p>
+						</div>
+						<div class="form-fields">
+							<label for="name">Titre</label>
+							<input type="text" name="titre" id="titre">
+							<label for="choix">Categorie</label>
+							<select name="choix" id="choix">
+								<option value=""></option>
+								<option value=""></option>
+								<option value=""></option>
+								<option value=""></option>
+						</div>
+					</form>
+					<div class="btnValid">
+						<button class="Valid">Valider</button>
+					</div>
+				</div>
 			</aside>
 		</div>
-
-        <div class="gallery">
-		</div>
+        <div class="gallery"></div>
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>

@@ -1,41 +1,62 @@
-window.localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR...");
-console.log("Token enregistré !");
-
-//Creation modal
+const token = window.localStorage.getItem("token");
+console.log("Token récupere :", token)
+ 
+//access to the modal
 let modal = null 
 
-const openModal = function(event){
+const openModal = function (event) {
     event.preventDefault()
     modal = document.querySelector(event.target.getAttribute("data-target"));
     modal.style.display = null
     modal.addEventListener("click", closeModal);
     modal.removeAttribute("aria-hidden")
     modal.querySelector(".close").addEventListener("click", closeModal)
-    modal.querySelector(".elementModal").addEventListener("click", stopPropagation)
+    modal.querySelector(".modal-gallery").addEventListener("click", stopPropagation)
+    showElementModal()
 }
 
-const closeModal = function(event){
+const closeModal = function (event) {
     if (modal === null) return
     event.preventDefault()
     modal.style.display = "none"
     modal.removeEventListener("click", closeModal);
     modal.setAttribute("aria-hidden", "true")
     modal.querySelector(".close").removeEventListener("click", closeModal)
-    modal.querySelector(".elementModal").removeEventListener("click", stopPropagation)
+    modal.querySelector(".modal-gallery").removeEventListener("click", stopPropagation)
     modal = null
 }
+
 const stopPropagation = function (event) {
     event.stopPropagation()
 }
+
+const showElementModal = function () {
+    const elementModal = modal.querySelector(".modal-gallery");
+    const addProject = modal.querySelector(".modal-add-photo");
+    elementModal.style.display = "block";
+    addProject.style.display = "none";
+}
+
+const showAddProject = function () {
+    const elementModal = modal.querySelector(".modal-gallery");
+    const addProject = modal.querySelector(".modal-add-photo");
+    elementModal.style.display = "none";
+    addProject.style.display = "block";
+};
 
 document.querySelectorAll(".modify").forEach(attribut => {
     attribut.addEventListener("click", openModal)
 })
 
-//affichage projet miniature
+document.querySelector(".more").addEventListener("click", (event) => {
+    event.preventDefault();
+    showAddProject();
+});
+
+//displaying projects in thumbnail
 const api = "http://localhost:5678/api"
 
-async function getWorks(){
+async function getWorks () {
     try{
         const response = await fetch(api + "/works", {
             method:"GET", 
@@ -55,8 +76,8 @@ async function getWorks(){
     }
 }
 
-function displayInProject(projects2) {
-    const container = document.querySelector("#portfolio .mini-project");
+function displayInProject (projects2) {
+    const container = document.querySelector("#portfolio .modal-project-list");
     
     container.innerHTML = "";
     projects2.forEach(project => {
@@ -73,13 +94,9 @@ function displayInProject(projects2) {
     });
 }
 
-//supprision de projets
-const token = window.localStorage.getItem("token");
-
+//deletion of projects
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM chargé, script exécuté !");
-    getWorks().then(projects => { 
-        console.log("Projets récupérés dans getWorks() :", projects); 
+    getWorks().then(projects => {
         if (projects && projects.length > 0) {
             btnBin(projects);
         } else {
@@ -89,10 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function btnBin (projects) {
-    const container = document.querySelector(".mini-project");
+    const container = document.querySelector(".modal-project-list");
 
     if (!container) {
-        console.error("Le conteneur '.mini-project' est introuvable !");
         return;
     }
     container.innerHTML = "";
@@ -126,32 +142,30 @@ function btnBin (projects) {
         container.appendChild(projectElement);
     });
 }
-
+const autToken = token
 async function deleteProject(id) {
     try {
-        const responseBin = await fetch (api + `/work/${id}`,{
+        const responseBin = await fetch (api + `/works/${id}`,{
             method:"DELETE", 
             headers: { 
                 "content-type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Basic ${autToken}`,
              }   
         });
         
-        if (!responseBin.ok) {
-            console.error("non autorisé");
-            return false;
-        }
-        if(responseBin.status === 204) {
+        if (responseBin.ok && responseBin.status === 204) {
             console.log("Projet supprimé avec succès !");
-            return true;
+            return true; 
+
+        } else {
+            console.error(`Erreur inattendue : ${responseBin.status}`);
         }
         return false;
 
     } catch (error) {
         console.error("Erreur lors de l’appel API :", error);
         return false 
-    }
-}
+    }}
 
 async function worksProject(){
     const allProject = await getWorks();
