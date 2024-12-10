@@ -58,33 +58,30 @@
 					<button class="more">Ajouter une photo</button>
 					</div>
 				</div>
-				<div class="modal-add-photo" style="display: none;">
+				<div class="modal-add-photo" style="display: none;" >
 					<button class="close"><i class="fa-solid fa-xmark"></i></button>
+					<button class="return"><i class="fa-solid fa-arrow-left"></i></button>
 					<h2>Ajout photo</h2>
-					<form>
+					<form class="upload-form" enctype="multipart/form-data" method="post" name="fileinfo">
 						<div class="photo-upload">
-							<input type="file" id="fileInput" class="file-input" accept="image/png, image/jpeg">
+							<div class="upload-preview">
+								<i class="fa-solid fa-image"></i>
+							</div>
+							<input type="file" id="fileInput" class="file-input" name="image" accept="image/png, image/jpeg" required>
     						<label for="fileInput" class="file-label">
-								<div class="upload-preview">
-									<i class="fa-solid fa-image"></i>
-								</div>
 							<button type="button" class="btn-add-photo">+ Ajouter photo</button>
-							<p class="upload-instructions"></p>
+							<p class="upload-instructions">jpg, png : 4mo max</p>
 						</div>
 						<div class="form-fields">
-							<label for="name">Titre</label>
-							<input type="text" name="titre" id="titre">
+							<label for="titre">Titre</label>
+							<input type="text" name="title" id="title" required>
 							<label for="choix">Categorie</label>
-							<select name="choix" id="choix">
-								<option value=""></option>
-								<option value=""></option>
-								<option value=""></option>
-								<option value=""></option>
+							<select name="category" id="category" required></select>
 						</div>
-					</form>
-					<div class="btnValid">
-						<button class="Valid">Valider</button>
+					<div class="btnValid"></div>
+						<button type="submit" class="Valid">Valider</button>
 					</div>
+				</form>	
 				</div>
 			</aside>
 		</div>
