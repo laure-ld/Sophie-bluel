@@ -14,6 +14,10 @@ const openModal = function(event) {
         btn.addEventListener("click", closeModal); });
     modal.querySelector(".modal-gallery").addEventListener("click", stopPropagation)
     modal.querySelector(".modal-add-photo").addEventListener("click", stopPropagation)
+    const returnButton = modal.querySelector(".return");
+    if (returnButton) {
+        returnButton.addEventListener("click", showElementModal);
+    }
     showElementModal()
 }
 
@@ -27,8 +31,12 @@ const closeModal = function(event) {
         btn.removeEventListener("click", closeModal)});
     modal.querySelector(".modal-gallery").removeEventListener("click", stopPropagation)
     modal.querySelector(".modal-add-photo").removeEventListener("click", stopPropagation)
-    modal = null
-}
+    const returnButton = modal.querySelector(".return");
+    if (returnButton) {
+        returnButton.removeEventListener("click", showElementModal);
+    }
+    modal = null;
+};
 
 const stopPropagation = function(event) {
     event.stopPropagation()
@@ -133,8 +141,8 @@ function btnBin(projects) {
             if (confirmation) {
                 const isDeleted = await deleteProject(id);
                 if (isDeleted) {
-                    const projectElement = document.getElementById(`project-${id}`);
-                    projectElement.remove();
+                    removeFromGallery(id, container);
+                    removeFromGallery(id, mainGallery);
                 }
             }
         });
@@ -162,14 +170,14 @@ async function deleteProject(id) {
              }   
         });
         
-        if (responseBin.ok && responseBin.status === 200) {
+        if (responseBin.ok && (responseBin.status === 204 || responseBin.status === 200)) {
             console.log("Projet supprimé avec succès !");
-            return true; 
+            return true;
 
         } else {
             console.error(`Erreur inattendue : ${responseBin.status}`);
+            return false;
         }
-        return false;
 
     } catch (error) {
         console.error("Erreur lors de l’appel API :", error);
@@ -184,27 +192,39 @@ async function worksProject(){
 }
 worksProject();
 
+function removeToGallery(projectId, gallery) {
+    const projectElement = gallery.querySelector(`#project-${projectId}`);
+    if (projectElement) {
+        projectElement.remove();
+        console.log(`Le projet avec l'ID ${projectId} a été supprimé de la galerie.`);
+    } else {
+        console.error(`Impossible de trouver le projet avec l'ID ${projectId} dans la galerie.`);
+    }
+}
+
 //add new project
 const form = document.querySelector(".upload-form");
+const gallery = document.querySelector(".gallery");
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
     try {
-        const responseBin = await fetch (api + `/works`,{
-            method:"POST", 
+        const response = await fetch (api + `/works`,{
+            method:"POST",
+            headers: {
+                "Authorization": `Bearer ${autToken}`,
+            },
             body: formData,  
         });
         
-        if (responseBin.ok && responseBin.status === 201) {
-            console.log("Projet rajouté avec succès !");
-            return true; 
-
+        if (response.ok && response.status === 201) {
+            const newProject = await response.json();
+            addToGallery(newProject);
         } else {
-            console.error(`Erreur inattendue : ${responseBin.status}`);
+            console.error(`Erreur inattendue : ${response.status}`);
         }
-        return false;
 
     } catch (error) {
         console.error("Erreur lors de l’appel API :", error);
@@ -212,11 +232,19 @@ form.addEventListener("submit", async (event) => {
     }
 });
 
-const categoryChoose = async function(event) {
-    
+function addToGallery(project) {
+    const projectElement = document.createElement("div");
+    projectElement.classList.add("project-item");
+    projectElement.innerHTML = `
+        <img src="${project.imageUrl}" alt="${project.title}">
+    `;
+    gallery.appendChild(projectElement);
+}
+
+const categoryChoose = async function() { 
     try {
         const response = await fetch (api + "/categories", {
-            Method : "GET",
+            method : "GET",
             headers : {
                 "Content-Type": "application/json", },
         })
@@ -234,12 +262,18 @@ const categoryChoose = async function(event) {
         }
         categoryDropdown.innerHTML = "";
 
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Sélectionnez une catégorie";
+        categoryDropdown.appendChild(defaultOption);
+
         categories.forEach((category) => {
             const option = document.createElement("option");
             option.value = category.id; 
             option.textContent = category.name; 
             categoryDropdown.appendChild(option);
         });
+        console.log("Catégories chargées avec succès !");
     }catch (error) {
         console.error("Erreur lors de la récupération des catégories :", error);
     }
