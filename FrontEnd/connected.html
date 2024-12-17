@@ -63,21 +63,20 @@
 					<h2>Ajout photo</h2>
 					<form class="upload-form" enctype="multipart/form-data" method="post" name="fileinfo">
 						<div class="photo-upload">
-							<div class="upload-preview">
+							<label for="fileInput" class="file-label upload-preview" id="uploadButton">
 								<i class="fa-solid fa-image"></i>
-							</div>
-							<input type="file" id="fileInput" class="file-input" name="image" accept="image/png, image/jpeg" required>
-    						<label for="fileInput" class="file-label">
-							<button type="button" class="btn-add-photo">+ Ajouter photo</button>
+								<span class="add-photo">+ Ajouter une photo</span>
+							</label>
+							<input type="file" id="fileInput" class="file-input" name="image" accept="image/png, image/jpeg" required style="display: none;">
 							<p class="upload-instructions">jpg, png : 4mo max</p>
 						</div>
 						<div class="form-fields">
-							<label for="titre">Titre</label>
-							<input type="text" name="title" id="title" required>
-							<label for="choix">Categorie</label>
+							<label for="title">Titre</label>
+							<input type="text" name="title" id="title" placeholder="Entrez un titre" required>
+							<label for="category">Categorie</label>
 							<select name="category" id="category" required></select>
 						</div>
-					<div class="btnValid"></div>
+					<div class="btnValid">
 						<button type="submit" class="Valid">Valider</button>
 					</div>
 				</form>	
