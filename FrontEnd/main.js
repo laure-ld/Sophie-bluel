@@ -27,7 +27,6 @@ async function worksProject(){
     const allProject = await getWorks();
     if(allProject) {
         displayProject(allProject);
-        displayInProject(allProject);
     }
 }
 worksProject();
@@ -43,6 +42,7 @@ function displayProject(projects) {
         
         const projectElement = document.createElement("div");
         projectElement.classList.add("project");
+        projectElement.id = `project-${project.id}`;
 
         projectElement.innerHTML = `
             <img src="${imageUrl}" alt="${title} image">
