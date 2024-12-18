@@ -88,7 +88,7 @@ async function getWorks() {
     }
 }
 
-function displayInProject(projects2) {
+function renderProjectsInModal(projects2) {
     const container = document.querySelector("#portfolio .modal-project-list");
     
     container.innerHTML = "";
@@ -106,66 +106,89 @@ function displayInProject(projects2) {
     });
 }
 
+async function worksProject(){
+    const allProject = await getWorks();
+    if(allProject) {
+        renderProjectsInModal(allProject);
+    }
+}
+worksProject();
+
 //deletion of projects
 document.addEventListener("DOMContentLoaded", () => {
     getWorks().then(projects => {
         if (projects && projects.length > 0) {
-            btnBin(projects);
+            renderProjectsWithDelete(projects);
         } else {
             console.error("Aucun projet récupéré ou liste vide !");
         }
     });
 });
 
-function btnBin(projects) {
+const renderProjectsWithDelete = function(projects) {
     const container = document.querySelector(".modal-project-list");
-    const mainGallery = document.querySelector(".gallery");
+    container.innerHTML="";
 
-    if (!container || !mainGallery) {
-        return;
-    }
-    container.innerHTML = "";
-    mainGallery.innerHTML = "";
-
-    projects.forEach(project => {
-        const id = project.id
-        const imageUrl = project.imageUrl
-        const title = project.title
-
-        const bin = document.createElement("button");
-        bin.classList.add("delete-btn");
-        bin.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-
-        bin.addEventListener("click", async () => {
-            const confirmation = confirm(`Voulez-vous vraiment supprimer le projet ${project.title} ?`);
-            if (confirmation) {
-                const isDeleted = await deleteProject(id);
-                if (isDeleted) {
-                    removeFromGallery(id, container);
-                    removeFromGallery(id, mainGallery);
-                }
-            }
-        });
-
+    projects.forEach((project) => {
         const projectElement = document.createElement("div");
         projectElement.classList.add("project-item");
-        projectElement.id = `project-${id}`;
-        projectElement.innerHTML = ` <img src="${imageUrl}" alt="${title} image"> `;
+        projectElement.id = `projectModal-${project.id}`;
 
+        const projectImage = document.createElement("img");
+        projectImage.src = project.imageUrl 
+        projectImage.alt = project.title
+
+
+        const bin = document.createElement("button");
+        bin.classList.add("delete-btn");        
+        bin.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+
+        projectElement.appendChild(projectImage);
         projectElement.appendChild(bin);
         container.appendChild(projectElement);
-
-        const projectMainElement = projectElement.cloneNode(true);
-        mainGallery.appendChild(projectMainElement);
-    });
+        btnAction(bin, project);
+})
 }
-const autToken = token
-async function deleteProject(id) {
+
+const btnAction = function(bin, project) {
+
+    bin.addEventListener("click", async () => {
+        const confirmation = confirm(`Voulez-vous vraiment supprimer le projet ${project.title} ?`);
+        if (confirmation) {
+            const isDeleted = await handleDeleteProject(project.id);
+            if (isDeleted) {
+                const galleryModal = document.querySelector(".modal-project-list");
+                const gallery = document.querySelector(".gallery");
+                removeProjectFromGallery(project.id, galleryModal, gallery);
+            }
+        }
+    }); 
+};
+
+function removeProjectFromGallery(projectId) {
+    const projectModalElement = document.querySelector(`#projectModal-${projectId}`);
+    const projectGalleryElement = document.querySelector(`#project-${projectId}`);
+    
+    if (projectModalElement) {
+        projectModalElement.remove();
+    } else {
+        console.error(`Impossible de trouver le projet avec l'ID projectModal-${projectId}`);
+    }
+
+    if (projectGalleryElement) {
+        projectGalleryElement.remove();
+    } else {
+        console.error(`Impossible de trouver le projet avec l'ID project-${projectId}`);
+    }
+}
+
+const authToken = token
+async function handleDeleteProject(projectId) {
     try {
-        const responseBin = await fetch (api + `/works/${id}`,{
+        const responseBin = await fetch (api + `/works/${projectId}`,{
             method:"DELETE", 
             headers: { 
-                "Authorization": `Basic ${autToken}`,
+                "Authorization": `Basic ${authToken}`,
                 "content-type": "application/json",
              }   
         });
@@ -182,25 +205,7 @@ async function deleteProject(id) {
     } catch (error) {
         console.error("Erreur lors de l’appel API :", error);
         return false 
-    }}
-
-async function worksProject(){
-    const allProject = await getWorks();
-    if(allProject) {
-        displayInProject(allProject);
-    }
-}
-worksProject();
-
-function removeToGallery(projectId, gallery) {
-    const projectElement = gallery.querySelector(`#project-${projectId}`);
-    if (projectElement) {
-        projectElement.remove();
-        console.log(`Le projet avec l'ID ${projectId} a été supprimé de la galerie.`);
-    } else {
-        console.error(`Impossible de trouver le projet avec l'ID ${projectId} dans la galerie.`);
-    }
-}
+}}
 
 //add new project
 const form = document.querySelector(".upload-form");
@@ -214,7 +219,7 @@ form.addEventListener("submit", async (event) => {
         const response = await fetch (api + `/works`,{
             method:"POST",
             headers: {
-                "Authorization": `Bearer ${autToken}`,
+                "Authorization": `Bearer ${authToken}`,
             },
             body: formData,  
         });
@@ -250,7 +255,7 @@ const categoryChoose = async function() {
         })
 
         if(!response.ok){
-            console.error("error cat")
+            console.error("error")
         }
 
         const categories = await response.json();
@@ -279,3 +284,28 @@ const categoryChoose = async function() {
     }
 };
 document.addEventListener("DOMContentLoaded", categoryChoose);
+
+document.addEventListener("DOMContentLoaded", () =>{
+    const form = document.querySelector(".upload-form")
+    const btnValid = document.querySelector(".Valid")
+    const requiredFields = form.querySelectorAll("[required]")
+
+    function checkFormCompletion() {
+        const allFieldsFilled = Array.from(requiredFields).every(field => {
+            if (field.type === "file") {
+                return field.files.length > 0;
+            }
+            return field.value.trim() !== "";
+        });
+
+        if (allFieldsFilled) {
+            btnValid.classList.add("active");
+        } else {
+            btnValid.classList.remove("active");
+        }
+    }
+    requiredFields.forEach(field => {
+        field.addEventListener("input", checkFormCompletion); 
+        field.addEventListener("change", checkFormCompletion); 
+    });
+})  
