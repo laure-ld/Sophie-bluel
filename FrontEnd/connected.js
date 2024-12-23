@@ -157,30 +157,27 @@ const btnAction = function(bin, project) {
         if (confirmation) {
             const isDeleted = await handleDeleteProject(project.id);
             if (isDeleted) {
-                const galleryModal = document.querySelector(".modal-project-list");
-                const gallery = document.querySelector(".gallery");
-                removeProjectFromGallery(project.id, galleryModal, gallery);
+
+                //supprimer le projet de la galerie
+                removeProjectFromGallery(`#project-${project.id}`);
+
+                //supprimer de la galerie de la modal
+                removeProjectFromGallery(`#projectModal-${project.id}`);
             }
         }
     }); 
 };
 
 function removeProjectFromGallery(projectId) {
-    const projectModalElement = document.querySelector(`#projectModal-${projectId}`);
-    const projectGalleryElement = document.querySelector(`#project-${projectId}`);
+    const projectElement = document.querySelector(projectId);
     
-    if (projectModalElement) {
-        projectModalElement.remove();
+    if (projectElement) {
+        projectElement.remove();
     } else {
-        console.error(`Impossible de trouver le projet avec l'ID projectModal-${projectId}`);
-    }
-
-    if (projectGalleryElement) {
-        projectGalleryElement.remove();
-    } else {
-        console.error(`Impossible de trouver le projet avec l'ID project-${projectId}`);
+        console.error(`Impossible de trouver le projet avec l'ID ${projectId}`);
     }
 }
+
 
 const authToken = token
 async function handleDeleteProject(projectId) {
