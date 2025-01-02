@@ -223,6 +223,7 @@ form.addEventListener("submit", async (event) => {
         if (response.ok && response.status === 201) {
             const newProject = await response.json();
             addToGallery(newProject);
+            form.reset();
         } else {
             console.error(`Erreur inattendue : ${response.status}`);
         }
@@ -252,15 +253,20 @@ function displaySelectedImage(event) {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        
         const imageElement = document.createElement("img");
-        imageElement.src = e.target.result; // URL générée par FileReader
+
+        imageElement.src = e.target.result; 
         imageElement.alt = "Aperçu de l'image sélectionnée";
         imageElement.style.width = "420px"; 
         imageElement.style.height ="169px";
         imageElement.style.objectFit ="contain"
 
-        photoUpload.innerHTML = ""; 
+        form.addEventListener("submit", async (event) => {
+        const existingImage = photoUpload.querySelector(".photo-upload img");
+        if (existingImage) {
+            existingImage.remove(); 
+        }})
+        
         photoUpload.appendChild(imageElement);
     };
     reader.readAsDataURL(file);

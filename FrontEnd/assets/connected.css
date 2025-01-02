@@ -303,7 +303,7 @@ footer nav ul {
 
 button.modify {
     border: none;
-    background-color: white;
+    background-color: #FFFEF8;
     font-size: 14px;
     gap: 10px;
     display: flex;
