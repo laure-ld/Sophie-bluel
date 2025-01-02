@@ -1,5 +1,10 @@
 const token = window.localStorage.getItem("token");
 console.log("Token récupere :", token)
+const form = document.querySelector(".upload-form");
+const gallery = document.querySelector(".gallery");
+const api = "http://localhost:5678/api"
+const fileInput = document.getElementById("fileInput"); 
+const photoUpload = document.querySelector(".photo-upload"); 
  
 //access to the modal
 let modal = null 
@@ -66,7 +71,6 @@ document.querySelector(".more").addEventListener("click", (event) => {
 });
 
 //displaying projects in thumbnail
-const api = "http://localhost:5678/api"
 
 async function getWorks() {
     try{
@@ -112,7 +116,6 @@ async function worksProject(){
         renderProjectsInModal(allProject);
     }
 }
-worksProject();
 
 //deletion of projects
 document.addEventListener("DOMContentLoaded", () => {
@@ -178,14 +181,12 @@ function removeProjectFromGallery(projectId) {
     }
 }
 
-
-const authToken = token
 async function handleDeleteProject(projectId) {
     try {
         const responseBin = await fetch (api + `/works/${projectId}`,{
             method:"DELETE", 
             headers: { 
-                "Authorization": `Basic ${authToken}`,
+                "Authorization": `Basic ${token}`,
                 "content-type": "application/json",
              }   
         });
@@ -205,8 +206,6 @@ async function handleDeleteProject(projectId) {
 }}
 
 //add new project
-const form = document.querySelector(".upload-form");
-const gallery = document.querySelector(".gallery");
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -216,7 +215,7 @@ form.addEventListener("submit", async (event) => {
         const response = await fetch (api + `/works`,{
             method:"POST",
             headers: {
-                "Authorization": `Bearer ${authToken}`,
+                "Authorization": `Bearer ${token}`,
             },
             body: formData,  
         });
@@ -242,6 +241,31 @@ function addToGallery(project) {
     `;
     gallery.appendChild(projectElement);
 }
+
+function displaySelectedImage(event) {
+    const file = event.target.files[0];
+    if (!file) return; 
+    if (!file.type.startsWith("image/")) {
+        console.error("Le fichier sélectionné n'est pas une image valide.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        
+        const imageElement = document.createElement("img");
+        imageElement.src = e.target.result; // URL générée par FileReader
+        imageElement.alt = "Aperçu de l'image sélectionnée";
+        imageElement.style.width = "420px"; 
+        imageElement.style.height ="169px";
+        imageElement.style.objectFit ="contain"
+
+        photoUpload.innerHTML = ""; 
+        photoUpload.appendChild(imageElement);
+    };
+    reader.readAsDataURL(file);
+}
+fileInput.addEventListener("change", displaySelectedImage);
 
 const categoryChoose = async function() { 
     try {
@@ -305,4 +329,7 @@ document.addEventListener("DOMContentLoaded", () =>{
         field.addEventListener("input", checkFormCompletion); 
         field.addEventListener("change", checkFormCompletion); 
     });
-})  
+});
+
+// call functions
+worksProject();
