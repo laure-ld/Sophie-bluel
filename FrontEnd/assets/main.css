@@ -28,9 +28,16 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-body {
-	line-height: 1;
+
+main {
+    padding-top: 1em;
+    max-width: 1140px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    line-height: 1;
 }
+
 a {
 	text-decoration: none;
 	color: black;
@@ -53,12 +60,11 @@ table {
 
 /** end reset css**/
 body {
-	max-width: 1140px;
-	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -91,11 +97,12 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	gap: 45px;
 
 }
 nav li {
 	padding: 0 10px;
-	font-size: 1.2em;
+	font-size: 16px;
 }
 
 li:hover {
@@ -190,9 +197,19 @@ button[type="submit"]{
 	border-radius: 60px ;
 }
 
+footer {
+    background-color: white;
+    position: absolute;
+    width: 100%;
+}
+
 footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
+}
+
+footer.info li {
+    margin-right: 107px;
 }
 
 .info {
