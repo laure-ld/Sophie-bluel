@@ -2,9 +2,12 @@ const token = window.localStorage.getItem("token");
 console.log("Token récupere :", token)
 const form = document.querySelector(".upload-form");
 const gallery = document.querySelector(".gallery");
+const modalList = document.querySelector(".modal-project-list");
 const api = "http://localhost:5678/api"
 const fileInput = document.getElementById("fileInput"); 
 const photoUpload = document.querySelector(".photo-upload"); 
+const fileInputPhoto = document.getElementById("fileInput");
+const photoDiv = document.getElementById("photo");
  
 //access to the modal
 let modal = null 
@@ -39,6 +42,15 @@ const closeModal = function(event) {
     const returnButton = modal.querySelector(".return");
     if (returnButton) {
         returnButton.removeEventListener("click", showElementModal);
+    }
+    const form = modal.querySelector("form"); //Réinitialiser le form 
+    if (form) {
+        form.reset(); 
+    }
+    const photoUpload = modal.querySelector(".photo-upload img");
+    if (photoUpload) {
+        photoUpload.remove();
+        photoDiv.style.display = "block";
     }
     modal = null;
 };
@@ -241,6 +253,9 @@ function addToGallery(project) {
         <img src="${project.imageUrl}" alt="${project.title}">
     `;
     gallery.appendChild(projectElement);
+    modalList.appendChild(projectElement);
+
+
 }
 
 function displaySelectedImage(event) {
@@ -266,11 +281,17 @@ function displaySelectedImage(event) {
         if (existingImage) {
             existingImage.remove(); 
         }})
-        
         photoUpload.appendChild(imageElement);
     };
     reader.readAsDataURL(file);
 }
+
+fileInputPhoto.addEventListener("change", (event) => {
+    if (event.target.files.length > 0) {
+        // Masquer la div "photo"
+        photoDiv.style.display = "none";
+    }});
+
 fileInput.addEventListener("change", displaySelectedImage);
 
 const categoryChoose = async function() { 

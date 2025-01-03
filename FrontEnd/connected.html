@@ -58,18 +58,20 @@
 					<button class="more">Ajouter une photo</button>
 					</div>
 				</div>
-				<div class="modal-add-photo" style="display: none;" >
+				<div class="modal-add-photo">
 					<button class="close"><i class="fa-solid fa-xmark"></i></button>
 					<button class="return"><i class="fa-solid fa-arrow-left"></i></button>
 					<h2>Ajout photo</h2>
 					<form class="upload-form" enctype="multipart/form-data" method="post" name="fileinfo">
 						<div class="photo-upload">
+							<div id="photo">
 							<label for="fileInput" class="file-label upload-preview" id="uploadButton">
 								<i class="fa-solid fa-image"></i>
 								<span class="add-photo">+ Ajouter une photo</span>
 							</label>
 							<input type="file" id="fileInput" class="file-input" name="image" accept="image/png, image/jpeg" required style="display: none;">
 							<p class="upload-instructions">jpg, png : 4mo max</p>
+							</div>
 						</div>
 						<div class="form-fields">
 							<label for="title">Titre</label>
