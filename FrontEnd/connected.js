@@ -46,6 +46,7 @@ const closeModal = function(event) {
     if (form) {
         form.reset(); 
     }
+  
     const photoUpload = modal.querySelector(".photo-upload img");
     if (photoUpload) {
         photoUpload.remove();
@@ -252,6 +253,7 @@ form.addEventListener("submit", async (event) => {
         if (response.ok && response.status === 201) {
             form.reset();
             fetchAndDisplayGallery();
+
         } else {
             console.error(`Erreur inattendue : ${response.status}`);
         }
@@ -260,6 +262,7 @@ form.addEventListener("submit", async (event) => {
         console.error("Erreur lors de l’appel API :", error);
         return false 
     }
+
 });
 
 function addToGallery(project) {
@@ -298,6 +301,7 @@ function displaySelectedImage(event) {
         const existingImage = photoUpload.querySelector(".photo-upload img");
         if (existingImage) {
             existingImage.remove();
+            photoDiv.style.display = "block";
         }})
         photoUpload.appendChild(imageElement);
     };
