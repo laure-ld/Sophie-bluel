@@ -81,12 +81,12 @@ categoryProject();
 function displayCategorie(Categories, allProject){
     const container = document.querySelector(".btn-category");
     container.innerHTML = "";
-    console.log("allProject :", allProject);
     
 //all button
     const allButton = document.createElement("button");
     allButton.classList.add("cat-btn");
     allButton.textContent = "Tous";
+    allButton.style.cursor = "pointer";
     allButton.addEventListener("click", () => displayProject(allProject));
     container.appendChild(allButton);
 
@@ -97,6 +97,7 @@ const filtredCategory = new Set (Categories);
             
             const button = document.createElement("button");
             button.classList.add("cat-btn");
+            button.style.cursor = "pointer";
             button.textContent = name;
             button.dataset.id = id;
 

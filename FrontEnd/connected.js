@@ -1,5 +1,4 @@
 const token = window.localStorage.getItem("token");
-console.log("Token récupere :", token)
 const form = document.querySelector(".upload-form");
 const gallery = document.querySelector(".gallery");
 const modalList = document.querySelector(".modal-project-list");
@@ -77,10 +76,10 @@ document.querySelectorAll(".modify").forEach(attribut => {
     attribut.addEventListener("click", openModal)
 });
 
-document.querySelector(".more").addEventListener("click", (event) => {
-    event.preventDefault();
-    showAddProject();
-});
+//document.querySelector(".more").addEventListener("click", (event) => {
+  //  event.preventDefault();
+  //  showAddProject();
+//});
 
 //displaying projects in thumbnail
 
@@ -204,7 +203,6 @@ async function handleDeleteProject(projectId) {
         });
         
         if (responseBin.ok && (responseBin.status === 204 || responseBin.status === 200)) {
-            console.log("Projet supprimé avec succès !");
             return true;
 
         } else {
@@ -326,7 +324,6 @@ const categoryChoose = async function() {
             option.textContent = category.name; 
             categoryDropdown.appendChild(option);
         });
-        console.log("Catégories chargées avec succès !");
     }catch (error) {
         console.error("Erreur lors de la récupération des catégories :", error);
     }
