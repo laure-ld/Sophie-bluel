@@ -128,7 +128,7 @@ li img {
     width: 22px;
 }
 
-li:hover {
+li a:hover {
 	color: #B1663C;
 }
 

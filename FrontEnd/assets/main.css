@@ -105,8 +105,12 @@ nav li {
 	font-size: 16px;
 }
 
-li:hover {
+li a:hover {
 	color: #B1663C;
+}
+
+li img {
+    width: 22px;
 }
 #introduction {
 	display: flex;
