@@ -36,5 +36,6 @@ async function onLogin (event) {
             }
         } catch(error) {
             console.error("Erreur lors de la connexion :", error);
+            alert("mots de passe ou adresse mail incorrect")
         }
     }
