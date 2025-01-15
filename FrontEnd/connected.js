@@ -76,10 +76,10 @@ document.querySelectorAll(".modify").forEach(attribut => {
     attribut.addEventListener("click", openModal)
 });
 
-//document.querySelector(".more").addEventListener("click", (event) => {
-  //  event.preventDefault();
-  //  showAddProject();
-//});
+document.querySelector(".more").addEventListener("click", (event) => {
+    event.preventDefault();
+    showAddProject();
+});
 
 //displaying projects in thumbnail
 
@@ -216,6 +216,25 @@ async function handleDeleteProject(projectId) {
 }}
 
 //add new project
+async function fetchAndDisplayGallery() {
+    try {
+        const response = await fetch(api + `/works`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+        const projects = await response.json(); 
+        modalList.innerHTML="";
+        gallery.innerHTML="";
+        projects.forEach((project) => {
+            if (!gallery.querySelector(`[data-id="${project.id}"]`)) {
+                addToGallery(project);
+            }
+        });
+    } catch (error) {
+        console.error("Erreur lors du chargement de la galerie :", error);
+    }
+}
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -231,9 +250,8 @@ form.addEventListener("submit", async (event) => {
         });
         
         if (response.ok && response.status === 201) {
-            const newProject = await response.json();
-            addToGallery(newProject);
             form.reset();
+            fetchAndDisplayGallery();
         } else {
             console.error(`Erreur inattendue : ${response.status}`);
         }
@@ -245,15 +263,17 @@ form.addEventListener("submit", async (event) => {
 });
 
 function addToGallery(project) {
+    
     const projectElement = document.createElement("div");
     projectElement.classList.add("project-item");
+    projectElement.setAttribute("data-id", project.id);
     projectElement.innerHTML = `
         <img src="${project.imageUrl}" alt="${project.title}">
     `;
     gallery.appendChild(projectElement);
-    modalList.appendChild(projectElement);
 
-
+    const modalProjectElement = projectElement.cloneNode(true);
+    modalList.appendChild(modalProjectElement);
 }
 
 function displaySelectedImage(event) {
@@ -277,7 +297,7 @@ function displaySelectedImage(event) {
         form.addEventListener("submit", async (event) => {
         const existingImage = photoUpload.querySelector(".photo-upload img");
         if (existingImage) {
-            existingImage.remove(); 
+            existingImage.remove();
         }})
         photoUpload.appendChild(imageElement);
     };
