@@ -155,7 +155,8 @@ const renderProjectsWithDelete = function(projects) {
 
 
         const bin = document.createElement("button");
-        bin.classList.add("delete-btn");        
+        bin.classList.add("delete-btn");   
+        bin.style.cursor = 'pointer';     
         bin.innerHTML = `<i class="fa-solid fa-trash"></i>`;
 
         projectElement.appendChild(projectImage);
