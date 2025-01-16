@@ -112,6 +112,10 @@ li a:hover {
 li img {
     width: 22px;
 }
+
+.login-page {
+	font-weight: 600;
+}
 #introduction {
 	display: flex;
 	align-items: center;
