@@ -103,10 +103,9 @@ const filtredCategory = new Set (Categories);
 
             button.addEventListener("click", () => {
                 const newFiltred = allProject.filter(projet => projet.category.id === id);
-                
-            displayProject(newFiltred);
+                displayProject(newFiltred);
             });
             container.appendChild(button);
-        }); 
-}
+        });     
+    }        
 getWorks();  
