@@ -102,6 +102,7 @@ const filtredCategory = new Set (Categories);
             button.dataset.id = id;
 
             button.addEventListener("click", () => {
+
                 const newFiltred = allProject.filter(projet => projet.category.id === id);
                 displayProject(newFiltred);
             });
